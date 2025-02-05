@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Email Classifier</title>
+</head>
+<body>
+    <h1>Spam Email Classifier</h1>
+    <form action="/predict" method="post">
+        <label for="email_text">Enter Email Text:</label><br>
+        <textarea id="email_text" name="email_text" rows="10" cols="50"></textarea><br><br>
+        <input type="submit" value="Classify">
+    </form>
+    <h2 id="result"></h2>
+    <script>
+        document.forms[0].onsubmit = async function(e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            let response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            let result = await response.json();
+            document.getElementById('result').textContent = `The email is classified as: ${result.prediction}`;
+        }
+    </script>
+</body>
+</html>
